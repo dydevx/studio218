@@ -157,6 +157,21 @@
       margin-left: 4px; vertical-align: middle; letter-spacing: 0.5px;
     }
 
+    @media (min-width: 501px) {
+      .item-name,
+      .subitem .item-name,
+      .drink-name {
+        font-size: 18px;
+      }
+
+      .item-price,
+      .subitem .item-price,
+      .drink-price {
+        font-family: 'Judson', serif;
+        font-size: 16px;
+      }
+    }
+
     @media (max-width: 500px) {
       .tabs {
         display: grid;
@@ -173,6 +188,10 @@
         line-height: 1.15;
         overflow-wrap: break-word;
         hyphens: auto;
+      }
+      .tab-btn:nth-child(3) {
+        font-size: 8.5px;
+        letter-spacing: 0.2px;
       }
       .page { padding: 0.75rem 0.85rem 1rem; }
       .page-inner { gap: 0.75rem; }
@@ -196,7 +215,7 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="showTab(0)">Nail- &amp; Acrylsystem</button>
     <button class="tab-btn" onclick="showTab(1)">Maniküre &amp; Pediküre</button>
-    <button class="tab-btn" onclick="showTab(2)">Wimpernverlängerung</button>
+    <button class="tab-btn" onclick="showTab(2)">Wimpern&shy;verlängerung</button>
     <button class="tab-btn" onclick="showTab(3)">Getränkekarte</button>
   </div>
 
