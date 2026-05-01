@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Preisliste</title>
+  <link href="https://fonts.googleapis.com/css2?family=Judson:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #f5ece6; font-family: 'Georgia', serif; }
@@ -13,24 +14,27 @@
       min-height: 100vh;
       max-width: 680px;
       margin: 0 auto;
-      padding: 0 0 2rem;
+      padding: 0 0 2rem; 
     }
 
     h1 {
+      font-family: 'Judson', serif;
       text-align: center;
-      font-size: 1.8rem;
+      font-size: 60px;
       font-weight: 400;
-      color: #7a5c4e;
+      font-weight: bold;
+      color: #965e4a;
       padding: 1rem 0 0.5rem;
       letter-spacing: 1px;
+
     }
 
     /* ── TABS ── */
     .tabs { display: flex; padding: 0 1rem 0.6rem; gap: 6px; }
     .tab-btn {
       flex: 1 1 0;
-      padding: 0.45rem 0.4rem;
-      font-size: 10px;
+      padding: 0.58rem 0.5rem;
+      font-size: 11px;
       font-weight: 700;
       letter-spacing: 0.6px;
       text-transform: uppercase;
@@ -56,8 +60,9 @@
     .img-col { flex: 0 0 170px; }
     .img-col img { width: 100%; border-radius: 4px; object-fit: cover; }
 
-    h2 { font-size: 0.95rem; font-weight: 700; color: #7a5c4e; text-transform: uppercase; letter-spacing: 1px; margin: 0.8rem 0 0.3rem; }
-    h3 { font-size: 0.9rem; font-weight: 700; color: #5a3e35; margin: 0.7rem 0 0.3rem; font-style: italic; }
+    h2 { font-family: 'Judson', serif; font-size: 16px; font-weight: 700; color: #7a5c4e; text-transform: uppercase; letter-spacing: 1px; margin: 0.8rem 0 0.3rem; }
+    h3 { font-family: 'Judson', serif; font-size: 16px; font-weight: 700; color: #5a3e35; margin: 0.7rem 0 0.3rem; font-style: italic; }
+    .content-col strong { font-family: 'Judson', serif; font-size: 16px !important; }
 
     /*
       LAYOUT per row:
@@ -74,6 +79,8 @@
       color: #4a3028;
     }
     .item-name {
+      font-family: 'Judson', serif;
+      font-size: 16px;
       white-space: nowrap;
       padding-bottom: 3px;
     }
@@ -107,7 +114,7 @@
       font-size: 11px;
       color: #6a5048;
     }
-    .subitem .item-name { font-size: 11px; }
+    .subitem .item-name { font-size: 16px; }
     .subitem .item-time { font-size: 10px; }
     .subitem .item-price { font-size: 11px; }
 
@@ -120,7 +127,8 @@
       column-gap: 4px;
     }
     .drink-name {
-      font-size: 12px;
+      font-family: 'Judson', serif;
+      font-size: 16px;
       font-weight: 600;
       color: #4a3028;
       padding-bottom: 3px;
@@ -151,9 +159,8 @@
 
     @media (max-width: 500px) {
       .tabs { gap: 4px; }
-      .tab-btn { font-size: 9px; padding: 0.45rem 0.2rem; }
+      .tab-btn { font-size: 10px; padding: 0.52rem 0.25rem; }
       .img-col { flex: 1 1 100%; }
-      h1 { font-size: 1.4rem; }
     }
   </style>
 </head>
