@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preisliste</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f5ece6; font-family: 'Georgia', serif; }
+
+    .wrap {
+      background: #f5ece6;
+      min-height: 100vh;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 0 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: #7a5c4e;
+      padding: 1rem 0 0.5rem;
+      letter-spacing: 1px;
+    }
+
+    /* ── TABS ── */
+    .tabs { display: flex; padding: 0 1rem 0.6rem; gap: 6px; }
+    .tab-btn {
+      flex: 1 1 0;
+      padding: 0.45rem 0.4rem;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      background: #7a5c4e;
+      color: #fff;
+      transition: background 0.2s, transform 0.1s;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.2;
+    }
+    .tab-btn.active { background: #4a2c1e; }
+    .tab-btn:hover:not(.active) { background: #5e4238; }
+    .tab-btn:active { transform: scale(0.97); }
+
+    /* ── PAGES ── */
+    .page { display: none; padding: 1rem 1rem; }
+    .page.active { display: block; }
+    .page-inner { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .content-col { flex: 1 1 260px; min-width: 0; }
+    .img-col { flex: 0 0 170px; }
+    .img-col img { width: 100%; border-radius: 4px; object-fit: cover; }
+
+    h2 { font-size: 0.95rem; font-weight: 700; color: #7a5c4e; text-transform: uppercase; letter-spacing: 1px; margin: 0.8rem 0 0.3rem; }
+    h3 { font-size: 0.9rem; font-weight: 700; color: #5a3e35; margin: 0.7rem 0 0.3rem; font-style: italic; }
+
+    /*
+      LAYOUT per row:
+      [name]  [time]  [dots........]  [price]
+      grid: auto  auto  1fr  auto
+    */
+    .item {
+      display: grid;
+      grid-template-columns: auto auto 1fr auto;
+      align-items: end;
+      column-gap: 4px;
+      margin: 0.22rem 0;
+      font-size: 12px;
+      color: #4a3028;
+    }
+    .item-name {
+      white-space: nowrap;
+      padding-bottom: 3px;
+    }
+    .item-time {
+      font-size: 10px;
+      color: #8a6a60;
+      white-space: nowrap;
+      padding-bottom: 3px;
+    }
+    .item-dots {
+      border-bottom: 1px dashed #b89a8a;
+      height: 0;
+      min-width: 16px;
+      margin-bottom: 3px;
+    }
+    .item-price {
+      font-weight: 600;
+      font-size: 12px;
+      white-space: nowrap;
+      text-align: right;
+      padding-bottom: 3px;
+    }
+
+    /* subitem — same grid, indented */
+    .subitem {
+      display: grid;
+      grid-template-columns: auto auto 1fr auto;
+      align-items: end;
+      column-gap: 4px;
+      margin: 0.13rem 0 0.13rem 12px;
+      font-size: 11px;
+      color: #6a5048;
+    }
+    .subitem .item-name { font-size: 11px; }
+    .subitem .item-time { font-size: 10px; }
+    .subitem .item-price { font-size: 11px; }
+
+    /* drink rows */
+    .drink-item { margin: 0.35rem 0; }
+    .drink-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: end;
+      column-gap: 4px;
+    }
+    .drink-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #4a3028;
+      padding-bottom: 3px;
+      white-space: nowrap;
+    }
+    .drink-dots {
+      border-bottom: 1px dashed #b89a8a;
+      height: 0;
+      min-width: 16px;
+      margin-bottom: 3px;
+    }
+    .drink-price {
+      font-weight: 600;
+      font-size: 12px;
+      text-align: right;
+      white-space: nowrap;
+      padding-bottom: 3px;
+    }
+    .drink-desc { font-size: 11px; color: #6a5048; margin-top: 1px; }
+    .drink-desc-en { font-size: 10px; color: #8a7068; font-style: italic; }
+
+    .signature {
+      font-size: 9px; font-weight: 700; color: #c9a898;
+      border: 1px solid #c9a898; padding: 0 3px;
+      border-radius: 2px; display: inline-block;
+      margin-left: 4px; vertical-align: middle; letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 500px) {
+      .tabs { gap: 4px; }
+      .tab-btn { font-size: 9px; padding: 0.45rem 0.2rem; }
+      .img-col { flex: 1 1 100%; }
+      h1 { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Preisliste</h1>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)">Nail- &amp; Acrylsystem</button>
+    <button class="tab-btn" onclick="showTab(1)">Maniküre &amp; Pediküre</button>
+    <button class="tab-btn" onclick="showTab(2)">Wimpernverlängerung</button>
+    <button class="tab-btn" onclick="showTab(3)">Getränkekarte</button>
+  </div>
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="p0">
+    <div class="page-inner">
+      <div class="content-col">
+        <div class="item"><span class="item-name">NagelDesign ab</span><span class="item-time">20 Min</span><span class="item-dots"></span><span class="item-price">10€</span></div>
+        <div class="item"><span class="item-name">Shellac entfernen</span><span class="item-time">20 Min</span><span class="item-dots"></span><span class="item-price">10€</span></div>
+        <div class="item"><span class="item-name">Gel/Acryl entfernen</span><span class="item-time">20 Min</span><span class="item-dots"></span><span class="item-price">15€</span></div>
+
+        <h3>Nagelmodellage – Neues Set mit UV-Gel</h3>
+        <div class="item"><span class="item-name">Natur</span><span class="item-time">50 Min</span><span class="item-dots"></span><span class="item-price">36€</span></div>
+        <div class="item"><span class="item-name">Cover Make-up</span><span class="item-time">60 Min</span><span class="item-dots"></span><span class="item-price">40€</span></div>
+        <div class="item"><span class="item-name">Farbe / Glitzer</span><span class="item-time">1 Std. 15 Min</span><span class="item-dots"></span><span class="item-price">42€</span></div>
+        <div class="item"><span class="item-name">Chrome / Ombré</span><span class="item-time">1 Std. 20 Min</span><span class="item-dots"></span><span class="item-price">46€</span></div>
+        <div class="item"><span class="item-name">French / Babyboomer</span><span class="item-time">1 Std. 20 Min</span><span class="item-dots"></span><span class="item-price">46€</span></div>
+
+        <h3>Nagelmodellage – Neues Set mit Gel X</h3>
+        <div class="item"><span class="item-name">Natur</span><span class="item-time">45 Min</span><span class="item-dots"></span><span class="item-price">48€</span></div>
+        <div class="item"><span class="item-name">Cover Make-up</span><span class="item-time">60 Min</span><span class="item-dots"></span><span class="item-price">52€</span></div>
+        <div class="item"><span class="item-name">Farbe / Glitzer</span><span class="item-time">1 Std. 15 Min</span><span class="item-dots"></span><span class="item-price">55€</span></div>
+        <div class="item"><span class="item-name">Chrome / Ombré</span><span class="item-time">1 Std. 20 Min</span><span class="item-dots"></span><span class="item-price">58€</span></div>
+        <div class="item"><span class="item-name">French / Babyboomer</span><span class="item-time">1 Std. 20 Min</span><span class="item-dots"></span><span class="item-price">58€</span></div>
+
+        <h2 style="margin-top:0.5rem;">Zubuchbare Extras</h2>
+        <div class="item"><span class="item-name">Extra Tip Verlängerung ab</span><span class="item-time">10 Min</span><span class="item-dots"></span><span class="item-price">3€</span></div>
+      </div>
+      <div class="img-col">
+        <img src="nails.jpg" alt="Nail art" />
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="p1">
+    <div class="page-inner">
+      <div class="content-col">
+        <h2>Maniküre</h2>
+        <div class="item"><span class="item-name">ohne Lack</span><span class="item-time">45 Min</span><span class="item-dots"></span><span class="item-price">26€</span></div>
+        <div class="item"><span class="item-name">mit Lack</span><span class="item-time">45 Min</span><span class="item-dots"></span><span class="item-price">30€</span></div>
+        <div class="item"><span class="item-name">mit Shellac</span><span class="item-time">50 Min</span><span class="item-dots"></span><span class="item-price">42€</span></div>
+
+        <h2 style="margin-top:0.6rem;">Pediküre</h2>
+        <div class="item"><span class="item-name">ohne Lack</span><span class="item-time">50 Min</span><span class="item-dots"></span><span class="item-price">40€</span></div>
+        <div class="item"><span class="item-name">mit Lack</span><span class="item-time">1 Std. 10 Min</span><span class="item-dots"></span><span class="item-price">45€</span></div>
+        <div class="item"><span class="item-name">mit Shellac</span><span class="item-time">1 Std</span><span class="item-dots"></span><span class="item-price">42€</span></div>
+        <div class="item"><span class="item-name">Gel mit Farbe</span><span class="item-time">1 Std. 10 Min</span><span class="item-dots"></span><span class="item-price">55€</span></div>
+      </div>
+      <div class="img-col">
+        <img src="manku.jpg" alt="Pedicure" style="filter:sepia(0.2) saturate(0.9);" />
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="page" id="p2">
+    <div class="page-inner">
+      <div class="content-col">
+        <h2>Wimpernverlängerung</h2>
+        <h3>Wimpernverlängerung – Auffüllen</h3>
+
+        <div style="margin-bottom:0.3rem;"><strong style="font-size:12px;color:#5a3e35;">1:1 Technik:</strong></div>
+        <div class="subitem"><span class="item-name">• bis 2 Wochen</span><span class="item-time">1 Std. 15 Min</span><span class="item-dots"></span><span class="item-price">42€</span></div>
+        <div class="subitem"><span class="item-name">• bis 4 Wochen</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">50€</span></div>
+        <div class="subitem"><span class="item-name">• Fremdarbeit</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">60€</span></div>
+
+        <div style="margin:0.3rem 0 0.2rem;"><strong style="font-size:12px;color:#5a3e35;">2D–3D / Hybrid Technik:</strong></div>
+        <div class="subitem"><span class="item-name">• bis 2 Wochen</span><span class="item-time">1 Std. 20 Min</span><span class="item-dots"></span><span class="item-price">38€</span></div>
+        <div class="subitem"><span class="item-name">• bis 3 Wochen</span><span class="item-time">1 Std. 25 Min</span><span class="item-dots"></span><span class="item-price">48€</span></div>
+        <div class="subitem"><span class="item-name">• bis 4 Wochen</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">58€</span></div>
+        <div class="subitem"><span class="item-name">• Fremdarbeit</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">68€</span></div>
+
+        <div style="margin:0.3rem 0 0.2rem;"><strong style="font-size:12px;color:#5a3e35;">4D–5D / Wet Look Technik:</strong></div>
+        <div class="subitem"><span class="item-name">• bis 2 Wochen</span><span class="item-time">1 Std. 20 Min</span><span class="item-dots"></span><span class="item-price">46€</span></div>
+        <div class="subitem"><span class="item-name">• bis 3 Wochen</span><span class="item-time">1 Std. 25 Min</span><span class="item-dots"></span><span class="item-price">54€</span></div>
+        <div class="subitem"><span class="item-name">• bis 4 Wochen</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">64€</span></div>
+        <div class="subitem"><span class="item-name">• Fremdarbeit</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">75€</span></div>
+
+        <div style="margin:0.3rem 0 0.2rem;"><strong style="font-size:12px;color:#5a3e35;">ab 6D Technik:</strong></div>
+        <div class="subitem"><span class="item-name">• bis 2 Wochen</span><span class="item-time">1 Std. 20 Min</span><span class="item-dots"></span><span class="item-price">54€</span></div>
+        <div class="subitem"><span class="item-name">• bis 3 Wochen</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">64€</span></div>
+        <div class="subitem"><span class="item-name">• bis 4 Wochen</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">75€</span></div>
+        <div class="subitem"><span class="item-name">• Fremdarbeit</span><span class="item-time">1 Std. 35 Min</span><span class="item-dots"></span><span class="item-price">84€</span></div>
+
+        <h3 style="margin-top:0.5rem;">Augenbrauen &amp; Wimpernbehandlungen:</h3>
+        <div class="item"><span class="item-name">Wimpern färben</span><span class="item-time">15 Min</span><span class="item-dots"></span><span class="item-price">15€</span></div>
+
+        <h3>Wimpernverlängerung – Neuanlage:</h3>
+        <div class="item"><span class="item-name">1:1 Technik</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">59€</span></div>
+        <div class="item"><span class="item-name">2D–3D / Hybrid Technik</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">67€</span></div>
+        <div class="item"><span class="item-name">4D–5D / Wet Look Technik</span><span class="item-time">1 Std. 30 Min</span><span class="item-dots"></span><span class="item-price">79,50€</span></div>
+        <div class="item"><span class="item-name">ab 6D Technik</span><span class="item-time">1 Std. 40 Min</span><span class="item-dots"></span><span class="item-price">83,20€</span></div>
+
+        <h3>Wimpernverlängerung – Entfernen:</h3>
+        <div class="item"><span class="item-name"></span><span class="item-time">20 Min</span><span class="item-dots"></span><span class="item-price">15€</span></div>
+
+        <h3>Wimpernlifting:</h3>
+        <div class="item"><span class="item-name">inkl. Pflege ohne färben</span><span class="item-time">1 Std</span><span class="item-dots"></span><span class="item-price">47€</span></div>
+        <div class="item"><span class="item-name">inkl. Pflege &amp; färben</span><span class="item-time">1 Std</span><span class="item-dots"></span><span class="item-price">52€</span></div>
+      </div>
+      <div class="img-col">
+        <img src="wim.jpg" alt="Lashes" />
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4 -->
+  <div class="page" id="p3">
+    <div class="page-inner">
+      <div class="content-col">
+        <h2>Getränkekarte</h2>
+
+        <h3>Matcha:</h3>
+        <div class="drink-item">
+          <div class="drink-header">
+            <span class="drink-name">Matcha Latte (Blaubeere / Erdbeere / Klassik):</span>
+            <span class="drink-dots"></span>
+            <span class="drink-price">6,20€</span>
+          </div>
+          <div class="drink-desc">• Eine erfrischende Fusion aus Matcha, Milch und Beeren.</div>
+          <div class="drink-desc-en">A refreshing fusion of matcha, milk and fruit.</div>
+        </div>
+        <div class="drink-item">
+          <div class="drink-header">
+            <span class="drink-name">Cold Whisk Matcha:</span>
+            <span class="drink-dots"></span>
+            <span class="drink-price">5,20€</span>
+          </div>
+          <div class="drink-desc">• Traditionell kalt aufgeschlagener Matcha für puren Genuss..</div>
+        </div>
+        <div class="drink-item">
+          <div class="drink-header">
+            <span class="drink-name">Coco Matcha: <span class="signature">SIGNATURE DRINK</span></span>
+            <span class="drink-dots"></span>
+            <span class="drink-price">6,80€</span>
+          </div>
+          <div class="drink-desc">Cremige Mischung aus Matcha und Kokosnuss.</div>
+        </div>
+
+        <h3>Kaffee:</h3>
+        <div class="drink-item">
+          <div class="drink-header">
+            <span class="drink-name">Cafe Bac Xiu:</span>
+            <span class="drink-dots"></span>
+            <span class="drink-price">5,20€</span>
+          </div>
+          <div class="drink-desc">• Vietnamesischer weißer Kaffee mit süß-milchigem Geschmack.</div>
+          <div class="drink-desc-en">Vietnamese white coffee with a sweet, milky flavor.</div>
+        </div>
+        <div class="drink-item">
+          <div class="drink-header">
+            <span class="drink-name">Cafe Muoi: <span class="signature">SIGNATURE DRINK</span></span>
+            <span class="drink-dots"></span>
+            <span class="drink-price">5,80€</span>
+          </div>
+          <div class="drink-desc">Traditioneller vietnamesischer Salzkaffee mit cremiger Haube.</div>
+          <div class="drink-desc-en">Traditional Vietnamese salted coffee with a creamy frothy top.</div>
+        </div>
+        <div class="drink-item">
+          <div class="drink-header">
+            <span class="drink-name">Iced Coffee:</span>
+            <span class="drink-dots"></span>
+            <span class="drink-price">4,80€</span>
+          </div>
+          <div class="drink-desc">Vietnamesischer Eiskaffee mit süßer Kondensmilch.</div>
+        </div>
+
+        <h3>Erfrischungen:</h3>
+        <div class="drink-item">
+          <div class="drink-header">
+            <span class="drink-name">Yuzu Mint Breeze:</span>
+            <span class="drink-dots"></span>
+            <span class="drink-price">3,80€</span>
+          </div>
+          <div class="drink-desc">• Spritzige Yuzu-Zitrus-Limo mit frischer Minze..</div>
+        </div>
+        <div class="drink-item">
+          <div class="drink-header">
+            <span class="drink-name">Fresh Ice Tea (Kumquat / Limette):</span>
+            <span class="drink-dots"></span>
+            <span class="drink-price">3,20€</span>
+          </div>
+          <div class="drink-desc">• Klassische Erfrischung mit Kumquat oder Limette.</div>
+        </div>
+      </div>
+      <div class="img-col">
+        <img src="drink.jpg" alt="Matcha drinks" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showTab(i) {
+    document.querySelectorAll('.page').forEach((p, j) => p.classList.toggle('active', i === j));
+    document.querySelectorAll('.tab-btn').forEach((b, j) => b.classList.toggle('active', i === j));
+  }
+</script>
+</body>
+</html>

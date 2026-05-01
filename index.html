@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio 218 – Beauty · Nails · Lashes · Café</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Didact+Gothic&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5ede7;
+      --bg2: #ede0d8;
+      --brown: #a07060;
+      --brown-dark: #7a5040;
+      --brown-light: #c9a898;
+      --text: #6b4a3a;
+      --text-light: #a08878;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background: var(--bg);
+      font-family: 'Didact Gothic', sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LIGHT RAY ── */
+    .light-ray {
+      position: fixed;
+      top: -20vh;
+      right: -10vw;
+      width: 60vw;
+      height: 120vh;
+      background: linear-gradient(135deg, rgba(255,240,230,0.45) 0%, transparent 60%);
+      transform: rotate(-15deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .light-ray2 {
+      position: fixed;
+      bottom: -20vh;
+      left: -5vw;
+      width: 40vw;
+      height: 80vh;
+      background: linear-gradient(315deg, rgba(255,235,220,0.25) 0%, transparent 60%);
+      transform: rotate(-10deg);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      animation: fadeUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .studio-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.5rem, 8vw, 5.5rem);
+      letter-spacing: 0.35em;
+      color: var(--brown);
+      line-height: 1;
+      margin-bottom: -0.15em;
+    }
+
+    .number-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: clamp(7rem, 28vw, 18rem);
+      color: var(--brown);
+      line-height: 0.82;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+
+    /* Swash on the 2 */
+    .number-text .swash {
+      display: inline-block;
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .tagline {
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: clamp(0.65rem, 2vw, 0.85rem);
+      letter-spacing: 0.28em;
+      color: var(--brown-light);
+      text-transform: uppercase;
+      margin-top: 1.8rem;
+      animation: fadeUp 1.2s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .tagline span {
+      margin: 0 0.6em;
+      color: var(--brown);
+    }
+
+    /* ── CTA BUTTON ── */
+    .cta-wrap {
+      margin-top: 3.5rem;
+      animation: fadeUp 1.2s 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      padding: 0.85rem 2.8rem;
+      border: 1px solid var(--brown-light);
+      color: var(--brown-dark);
+      font-family: 'Didact Gothic', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 0;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .cta-btn:hover {
+      background: var(--brown);
+      color: #fff;
+      border-color: var(--brown);
+    }
+
+    /* ── PREISLISTE LINK ── */
+    .nav-pill {
+      display: inline-block;
+      margin-top: 1.2rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-decoration: none;
+      border-bottom: 1px solid var(--brown-light);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .nav-pill:hover { color: var(--brown-dark); }
+
+    /* ── DIVIDER LINE ── */
+    .divider {
+      width: 1px;
+      height: 60px;
+      background: var(--brown-light);
+      margin: 2.5rem auto 0;
+      opacity: 0.5;
+      animation: fadeUp 1.2s 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--brown-light);
+      text-transform: uppercase;
+    }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 480px) {
+      .tagline { letter-spacing: 0.15em; }
+      .studio-text { letter-spacing: 0.2em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="light-ray"></div>
+  <div class="light-ray2"></div>
+
+  <section class="hero">
+    <div class="logo-wrap">
+      <div class="studio-text">STUDIO</div>
+      <div class="number-text"><span class="swash">2</span>18</div>
+    </div>
+
+    <p class="tagline">
+      Beauty <span>·</span> Nails <span>·</span> Lashes <span>·</span> Café
+    </p>
+
+    <div class="cta-wrap">
+      <a href="preisliste.html" class="cta-btn">Preisliste ansehen</a>
+    </div>
+
+    <div class="divider"></div>
+  </section>
+
+  <footer class="footer">
+    &copy; 2025 Studio 218 &nbsp;·&nbsp; Beauty · Nails · Lashes · Café
+  </footer>
+</body>
+</html>
