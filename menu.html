@@ -157,6 +157,23 @@
       margin-left: 4px; vertical-align: middle; letter-spacing: 0.5px;
     }
 
+    #p2 .content-col {
+      max-height: min(560px, calc(100vh - 165px));
+      overflow-y: auto;
+      padding-right: 0.4rem;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+      scrollbar-color: #b89a8a transparent;
+    }
+    #p2 .content-col::-webkit-scrollbar {
+      width: 4px;
+    }
+    #p2 .content-col::-webkit-scrollbar-thumb {
+      background: #b89a8a;
+      border-radius: 999px;
+    }
+
     @media (min-width: 501px) {
       .item-name,
       .subitem .item-name,
@@ -205,6 +222,10 @@
         width: 100%;
         height: clamp(150px, 44vw, 215px);
         object-fit: cover;
+      }
+      #p2 .content-col {
+        max-height: 56vh;
+        padding-right: 0.35rem;
       }
     }
   </style>
